@@ -1,13 +1,54 @@
+const { Pokemon, Type } = require("../db");
 const axios = require("axios");
-const baseURL = require("../utils/consts");
+const { pokemonsURL } = require("../utils/consts");
 
-const getPokemonById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!id) throw new Error("No se recibio el id"); // Si no recibe ID lanza un error
-    let response = await axios.get(`${baseURL}/${id}`); // Peticion a la API
+const getPokemonById = async (id) => {
+  if (!id) throw new Error("No se recibio el id"); // Si no recibe ID lanza un error
+  if (id.length > 5) {
+    // Busca en la base de datos
+    let pokemon = await Pokemon.findByPk(id, {
+      include: {
+        model: Type,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
+      },
+    });
+    if (pokemon) {
+      let { dataValues } = pokemon;
+      pokemon = {
+        id: dataValues.id,
+        name: dataValues.name,
+        image: dataValues.image,
+        hp: dataValues.hp,
+        attack: dataValues.attack,
+        defense: dataValues.defense,
+        speed: dataValues.speed,
+        weight: dataValues.weight,
+        height: dataValues.height,
+      };
+
+      let types = dataValues.Types;
+      types = types.map((type) => {
+        return type.dataValues.name;
+      });
+      pokemon.types = types;
+      return pokemon;
+    } else {
+      throw new Error({ error: "No existe personaje con el id recibido" });
+    }
+  } else {
+    let response = await axios.get(`${pokemonsURL}/${id}`); // Peticion a la API
     let { data } = response;
 
+    // Extrae los  tipos
+    let { types } = data;
+    types = types.map((element) => {
+      return element.type.name;
+    });
+
+    // Crea el Pokemon
     const pokemon = {
       id: data.id,
       name: data.name,
@@ -18,10 +59,9 @@ const getPokemonById = async (req, res) => {
       speed: data.stats[5].base_stat,
       weight: data.weight,
       height: data.height,
+      types,
     };
-    res.status(200).json({ pokemon });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    return pokemon;
   }
 };
 

@@ -1,3 +1,4 @@
-const baseURL = "https://pokeapi.co/api/v2/pokemon";
+const pokemonsURL = "https://pokeapi.co/api/v2/pokemon";
+const typeURL = "https://pokeapi.co/api/v2/type";
 
-module.exports = baseURL;
+module.exports = { pokemonsURL, typeURL };
