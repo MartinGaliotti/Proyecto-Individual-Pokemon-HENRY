@@ -26,7 +26,7 @@ const getPokemonById = async (id) => {
         defense: dataValues.defense,
         speed: dataValues.speed,
         weight: dataValues.weight,
-        height: dataValues.height,
+        height: dataValues.height, // Extrae la informacion
       };
 
       let types = dataValues.Types;
