@@ -2,6 +2,7 @@
   display: grid;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .form {
@@ -140,6 +141,7 @@ button {
 }
 
 button.submit {
+  margin-top: 1em;
   width: 12rem;
   height: auto;
 }

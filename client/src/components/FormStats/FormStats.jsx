@@ -1,6 +1,7 @@
 import Styles from "./FormStats.module.css";
 import { formState } from "../../views/Create/consts";
 import { useState } from "react";
+import formValidation from "./formValidation";
 
 const FormStats = (props) => {
   const [pokemon, setPokemon] = useState({
@@ -12,27 +13,51 @@ const FormStats = (props) => {
     speed: 0,
     height: 0,
     weight: 0,
-  });
+  }); // Crea un estado local
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
     const property = event.target.name;
     const value = event.target.value;
-    setPokemon({ ...pokemon, [property]: value });
+    setPokemon({ ...pokemon, [property]: value }); // Actualiza el estado local con los datos del formulario cuando cambia
+    formValidation({ ...pokemon, [property]: value }, setErrors);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.submit(pokemon);
-    props.setForm(formState.statsComplete);
+    if (errors) {
+      const auxErrors = Object.keys(errors); // Si hay errores obtiene cuales
+
+      window.alert(
+        `Revise los siguentes campos del formulario: ${auxErrors.map(
+          // Y los muestra en una alerta
+          (error) => {
+            return `\n ${error}`;
+          }
+        )}`
+      );
+    } else {
+      props.submit(pokemon);
+      props.setForm(formState.statsComplete); // Actualiza el estado del formulario cuando se envian los datos
+    }
+  };
+
+  const renderError = (property) => {
+    if (errors && errors[property]) {
+      // Si existe un error en la propiedad que llega por argumento
+      return <p className={Styles.error}>{errors[property]}</p>; // Renderiza el texto del error
+    }
   };
 
   return (
     <div className={Styles.container}>
+      <h2 className={Styles.title}>Crea tu pokemon</h2>
       <form className={Styles.form} onSubmit={handleSubmit}>
         {/*  */}
         <div className={Styles.textInputContainer}>
           <label htmlFor="name" className={Styles.textLabel}>
-            Name:
+            Nombre:
           </label>
           <input
             value={pokemon.name}
@@ -43,7 +68,7 @@ const FormStats = (props) => {
             className={Styles.textInput}
           />
         </div>
-        <p className={Styles.error}></p>
+        {renderError("name")}
         {/*  */}
         <div className={Styles.textInputContainer}>
           <label htmlFor="image" className={Styles.textLabel}>
@@ -58,7 +83,7 @@ const FormStats = (props) => {
             className={Styles.textInput}
           />
         </div>
-        <p className={Styles.error}></p>
+        {renderError("image")}
         {/*  */}
         <div className={Styles.fieldContainer}>
           <label htmlFor="hp" className={Styles.label}>
@@ -75,7 +100,7 @@ const FormStats = (props) => {
             className={Styles.input}
           />
         </div>
-        <p className={Styles.error}></p>
+        {renderError("hp")}
         {/*  */}
         <div className={Styles.fieldContainer}>
           <label htmlFor="attack" className={Styles.label}>
@@ -92,7 +117,7 @@ const FormStats = (props) => {
             className={Styles.input}
           />
         </div>
-        <p className={Styles.error}></p>
+        {renderError("attack")}
         {/*  */}
         <div className={Styles.fieldContainer}>
           <label htmlFor="defense" className={Styles.label}>
@@ -109,7 +134,7 @@ const FormStats = (props) => {
             className={Styles.input}
           />
         </div>
-        <p className={Styles.error}></p>
+        {renderError("defense")}
         {/*  */}
         <div className={Styles.fieldContainer}>
           <label htmlFor="speed" className={Styles.label}>
@@ -126,7 +151,7 @@ const FormStats = (props) => {
             className={Styles.input}
           />
         </div>
-        <p className={Styles.error}></p>
+        {renderError("speed")}
         {/*  */}
         <div className={Styles.fieldContainer}>
           <label htmlFor="height" className={Styles.label}>
@@ -143,7 +168,7 @@ const FormStats = (props) => {
             className={Styles.input}
           />
         </div>
-        <p className={Styles.error}></p>
+        {renderError("height")}
         {/*  */}
         <div className={Styles.fieldContainer}>
           <label htmlFor="weight" className={Styles.label}>
@@ -160,7 +185,7 @@ const FormStats = (props) => {
             className={Styles.input}
           />
         </div>
-        <p className={Styles.error}></p>
+        {renderError("weight")}
         {/*  */}
         <button className={Styles.submit}>
           <span className={Styles.circle} aria-hidden="true">

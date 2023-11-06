@@ -1,7 +1,12 @@
 import FormStats from "../../components/FormStats/FormStats";
 import FormTypes from "../../components/FormTypes/FormTypes";
+import FormComplete from "../../components/FormComplete/FormComplete";
 import { formState } from "./consts";
 import { useState } from "react";
+import axios from "axios";
+import URL from "../../helpers/URL";
+
+let aux = true;
 
 const Create = () => {
   const [pokemon, setPokemon] = useState({
@@ -14,19 +19,30 @@ const Create = () => {
     height: 0,
     weight: 0,
     types: [],
-  });
+  }); // Crea un estado local para el pokemon
 
-  const [form, setForm] = useState(formState.incomplete);
+  const [form, setForm] = useState(formState.incomplete); // Crea un estado local para el estado del Formulario
 
   const formRender = () => {
     if (form === formState.incomplete) {
       return <FormStats submit={setPokemon} setForm={setForm} />;
     } else if (form === formState.statsComplete) {
       return (
-        <FormTypes submit={setPokemon} pokemon={pokemon} setForm={setForm} />
+        <FormTypes submit={setPokemon} pokemon={pokemon} setForm={setForm} /> // Segun el estado del formulario renderiza un componente diferente
       );
     } else {
-      return "Aca iria el form complete";
+      if (aux) {
+        aux = false;
+        axios
+          .post(`${URL.BaseUrl}${URL.Pokemons}`, pokemon)
+          .then(() => {
+            setForm(formState.created); // Si se crea bien setea el estado en CREATED
+          })
+          .catch((error) => {
+            setForm(error.message); // Si ocurre algun error setea el error en el estado
+          });
+      }
+      return <FormComplete result={form} setForm={setForm} />; // Renderiza el componente FormComplete
     }
   };
 

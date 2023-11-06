@@ -1,15 +1,44 @@
 const { pokemonsURL } = require("../utils/consts");
-const { Pokemon } = require("../db");
+const { Pokemon, Type } = require("../db");
 const axios = require("axios");
 
 const getPokemonsByName = async (name) => {
-  name = name.toLowerCase();
   let pokemons = [];
   let respuesta = await Pokemon.findAll({
     where: {
       name, // Busca el pokemon por nombre en la BDD
     },
+
+    include: {
+      model: Type,
+      attributes: ["name"],
+      through: {
+        attributes: [],
+      },
+    },
   });
+
+  respuesta = respuesta.map((char) => {
+    const { dataValues } = char;
+    const pokemon = {
+      id: dataValues.id,
+      name: dataValues.name,
+      image: dataValues.image,
+      hp: dataValues.hp,
+      attack: dataValues.attack,
+      defense: dataValues.defense,
+      speed: dataValues.speed,
+      weight: dataValues.weight,
+      height: dataValues.height, // Extrae la informacion
+    };
+    let types = dataValues.Types;
+    types = types.map((type) => {
+      return type.dataValues.name;
+    });
+    pokemon.types = types;
+    return pokemon;
+  });
+
   pokemons = [...pokemons, ...respuesta];
   try {
     respuesta = await axios(`${pokemonsURL}/${name}`); // Busca al pokemon por nombre en la API

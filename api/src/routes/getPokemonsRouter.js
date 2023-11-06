@@ -9,7 +9,7 @@ const getPokemonsRouter = async (req, res) => {
       respuesta = await getPokemonsByName(name); // Si viene nombre por query busca por nombre
     } else {
       let { limit, offset } = req.query;
-      limit ? limit : (limit = 10); // Si no llega un limite, establece 10
+      limit ? limit : (limit = 48); // Si no llega un limite, establece 48
       offset ? offset : (offset = 0); // Si no llega un offset, establece 0
       respuesta = await getPokemonsAPI(limit, offset); // Trae pokemons de la API
     }
