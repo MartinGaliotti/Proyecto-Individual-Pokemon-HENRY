@@ -7,6 +7,7 @@ const Cards = () => {
 
   const cardsRender = () => {
     // Recorre los personajes y renderiza las Cards de cada uno
+
     return characters.map((character) => {
       const { name, image, types, id } = character;
       return <Card key={id} name={name} image={image} types={types} />;
