@@ -2,12 +2,17 @@ import Styles from "./SearchBar.module.css";
 import { useState } from "react";
 import URL from "../../helpers/URL";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNameChars } from "../../redux/actions";
 
-const SearchBar = () => {
+const SearchBar = (props) => {
+  const { setReload } = props;
+
   const [name, setName] = useState("");
+
   const dispatch = useDispatch();
+
+  const actualPage = useSelector((state) => state.actualPage); // Trae la pagina actual del estado global
 
   const handleChange = (event) => {
     const actual = event.target.value; // Obtiene el valor del input en cada cambio
@@ -16,14 +21,19 @@ const SearchBar = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await axios.get(
-        `${URL.BaseUrl}${URL.Pokemons}?name=${name}` // Pide los pokemons por nombre al back
-      );
-      const { data } = response;
-      dispatch(addNameChars(data)); // Dispatch de los pokemons
-    } catch (error) {
-      window.alert("No se encontro ningun pokemon con ese nombre"); // Si hay un error envia una alerta
+    if (name !== "") {
+      try {
+        const response = await axios.get(
+          `${URL.BaseUrl}${URL.Pokemons}?name=${name}` // Pide los pokemons por nombre al back
+        );
+        const { data } = response;
+        setReload(Math.random());
+        dispatch(addNameChars(data)); // Dispatch de los pokemons
+      } catch (error) {
+        window.alert("No se encontro ningun pokemon con ese nombre"); // Si hay un error envia una alerta
+      }
+    } else {
+      setReload(1);
     }
   };
 

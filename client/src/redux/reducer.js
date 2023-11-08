@@ -3,12 +3,13 @@ import {
   ADD_NAME_CHARS,
   ADD_PAGE_CHARS,
   CHANGE_ACTUAL_PAGE,
-  FILTER,
-  ORDER,
+  FILTERANDORDER,
+  orderAndFilterChars,
 } from "./actions";
 
 const initialState = {
   allCharacters: [],
+  orderAndFilterChars: false,
   shownCharacters: [],
   actualPage: false,
 };
@@ -17,16 +18,32 @@ const rootReducer = (state = initialState, action) => {
   const { payload, type } = action;
   switch (type) {
     case ADD_ALL_CHARS:
-      return {
-        ...state,
-        allCharacters: payload,
-        actualPage: 0,
-      };
+      if (typeof payload === "object") {
+        return {
+          ...state,
+          allCharacters: payload,
+          actualPage: 0,
+        };
+      } else {
+        return {
+          ...state,
+          actualPage: payload,
+        };
+      }
       break;
 
     case ADD_PAGE_CHARS:
-      const { offset, limit } = payload;
-      const aux = [...state.allCharacters].splice(offset, limit);
+      const { offset, limit, filters } = payload;
+      let aux = [];
+      if (state.orderAndFilterChars && filters !== "all") {
+        if (state.orderAndFilterChars.length > 12) {
+          aux = [...state.orderAndFilterChars].splice(offset, limit);
+        } else {
+          aux = [...state.orderAndFilterChars];
+        }
+      } else {
+        aux = [...state.allCharacters].splice(offset, limit);
+      }
       return {
         ...state,
         shownCharacters: aux,
@@ -36,14 +53,56 @@ const rootReducer = (state = initialState, action) => {
     case ADD_NAME_CHARS:
       return {
         ...state,
-        shownCharacters: payload,
+        orderAndFilterChars: payload,
       };
+      break;
 
     case CHANGE_ACTUAL_PAGE:
       return {
         ...state,
         actualPage: payload,
       };
+      break;
+
+    case FILTERANDORDER:
+      const { type, BDDChars, sortBy, order } = payload;
+      let momentary = [];
+      if (BDDChars) {
+        momentary = BDDChars;
+      } else {
+        momentary = state.allCharacters;
+      }
+      if (type !== "nothing") {
+        momentary = momentary.filter((pokemon) => {
+          if (pokemon.types.includes(type)) {
+            return pokemon;
+          }
+        });
+      }
+
+      if (sortBy === "attack" && order !== "nothing") {
+        momentary = momentary.sort((a, b) =>
+          order === "upward" ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy]
+        );
+      } else if (sortBy === "name" && order !== "nothing") {
+        momentary = momentary.sort((a, b) => {
+          if (a[sortBy] > b[sortBy]) {
+            return order === "upward" ? 1 : -1;
+          }
+          if (a[sortBy] < b[sortBy]) {
+            return order === "upward" ? -1 : 1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+      }
+
+      return {
+        ...state,
+        orderAndFilterChars: momentary,
+        actualPage: 0,
+      };
+      break;
 
     default:
       return { ...state };

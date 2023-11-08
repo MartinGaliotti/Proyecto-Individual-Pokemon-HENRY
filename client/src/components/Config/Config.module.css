@@ -1,0 +1,6 @@
+.button {
+  min-height: 1em;
+  min-width: 1em;
+  background: url(../../assets/configImage.png) no-repeat center center;
+  background-size: cover;
+}

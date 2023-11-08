@@ -1,15 +1,8 @@
-/* html {
-  background-image: url("../../assets/LandingBackground.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-} */
-
 .container {
   margin: 0;
   background: url(../../assets/LandingBackground.jpg) no-repeat center center
     fixed;
   background-size: cover;
-  /* background-color: red; */
   min-width: 100vw;
   min-height: 100vh;
   display: flex;
