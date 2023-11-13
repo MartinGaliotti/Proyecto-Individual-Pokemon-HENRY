@@ -4,7 +4,6 @@ import Detail from "./views/Detail/Detail.jsx";
 import Create from "./views/Create/Create.jsx";
 import { Routes, Route } from "react-router-dom";
 import pathName from "./helpers/PATHNAME.routes.js";
-
 function App() {
   return (
     <>

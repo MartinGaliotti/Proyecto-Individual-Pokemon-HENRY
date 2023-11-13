@@ -10,7 +10,7 @@ const Cards = () => {
 
     return characters.map((character) => {
       const { name, image, types, id } = character;
-      return <Card key={id} name={name} image={image} types={types} />;
+      return <Card key={id} id={id} name={name} image={image} types={types} />;
     });
   };
 

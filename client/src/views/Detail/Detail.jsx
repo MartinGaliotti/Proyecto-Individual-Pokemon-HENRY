@@ -5,6 +5,7 @@ import URL from "../../helpers/URL";
 import Styles from "./Detail.module.css";
 import Loading from "../../components/Loading/Loading";
 import Error from "../../components/Error/Error";
+import BackToLanding from "../../components/BackToLanding/BackToLanding";
 
 const Detail = (props) => {
   const [pokemon, setPokemon] = useState(false);
@@ -81,7 +82,12 @@ const Detail = (props) => {
     }
   };
 
-  return <div className={Styles.container}>{pokemonRender()}</div>;
+  return (
+    <div className={Styles.container}>
+      <BackToLanding />
+      {pokemonRender()}
+    </div>
+  );
 };
 
 export default Detail;

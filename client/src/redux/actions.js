@@ -6,6 +6,7 @@ export const ADD_NAME_CHARS = "ADD_NAME_CHARS";
 export const ADD_PAGE_CHARS = "ADD_PAGE_CHARS";
 export const FILTERANDORDER = "FILTERANDORDER";
 export const CHANGE_ACTUAL_PAGE = "CHANGE_ACTUAL_PAGE";
+export const CHANGE_CANT_PAGES = "CHANGE_CANT_PAGES";
 
 export const addAllChars = (limit) => {
   const endpoint = `${URL.BaseUrl}${URL.Pokemons}?limit=${limit}`;

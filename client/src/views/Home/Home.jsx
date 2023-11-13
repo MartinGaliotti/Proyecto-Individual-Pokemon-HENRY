@@ -4,13 +4,11 @@ import Cards from "../../components/Cards/Cards";
 import Error from "../../components/Error/Error";
 import FormConfig from "../../components/FormConfig/FormConfig";
 import Loading from "../../components/Loading/Loading";
+import Paginated from "../../components/Paginated/Paginated";
+import ToCreate from "../../components/ToCreate/ToCreate";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addAllChars,
-  addPageChars,
-  changeActualPage,
-} from "../../redux/actions";
+import { addAllChars, addPageChars } from "../../redux/actions";
 import consts from "./consts";
 
 const Home = () => {
@@ -18,8 +16,7 @@ const Home = () => {
 
   const actualPage = useSelector((state) => state.actualPage); // Trae la pagina actual del estado global
 
-  const { cardsPerPage, next, prev, cantPokemons } = consts; // Destructuring de las constantes
-  const cantPage = cantPokemons / cardsPerPage - 1;
+  const { cardsPerPage, cantPokemons } = consts; // Destructuring de las constantes
 
   const [reload, setReload] = useState(false);
 
@@ -41,30 +38,6 @@ const Home = () => {
     }
   }, [actualPage, reload]);
 
-  const changePage = (event) => {
-    // Función para cambiar la pagina
-    const action = event.target.name;
-    let aux = 0;
-    switch (action) {
-      case next:
-        // Si la acción es aumentar
-        if (actualPage < cantPage) {
-          aux = actualPage + 1;
-        }
-        break;
-      case prev:
-        // Si la acción es decrementar
-        if (actualPage > 0) {
-          aux = actualPage - 1;
-        }
-        break;
-      default:
-        aux = actualPage;
-        break;
-    }
-    dispatch(changeActualPage(aux));
-  };
-
   const render = () => {
     // Renderiza la pagina cuando se hayan cargado los pokemons
     if (typeof actualPage === "number") {
@@ -72,12 +45,8 @@ const Home = () => {
         <div className={Styles.container}>
           <MainNav setReload={setReload} setConfig={setConfig} />
           <Cards />
-          <button name={prev} onClick={changePage}>
-            prev
-          </button>
-          <button name={next} onClick={changePage}>
-            next
-          </button>
+          <Paginated />
+          <ToCreate />
           {config && (
             <FormConfig
               setReload={setReload}

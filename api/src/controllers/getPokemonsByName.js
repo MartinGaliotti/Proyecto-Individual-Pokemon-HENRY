@@ -17,7 +17,6 @@ const getPokemonsByName = async (name) => {
       },
     },
   });
-
   respuesta = respuesta.map((char) => {
     const { dataValues } = char;
     const pokemon = {
@@ -60,10 +59,9 @@ const getPokemonsByName = async (name) => {
       types,
     };
     pokemons = [...pokemons, pokemon];
-  } catch (error) {
-    throw new Error(error.message);
-  }
-
+  } catch (error) {}
+  if (pokemons.length === 0)
+    throw new Error("No se encontro ningun pokemon con ese nombre");
   return pokemons;
 };
 

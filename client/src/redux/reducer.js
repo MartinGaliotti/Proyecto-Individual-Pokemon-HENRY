@@ -4,7 +4,6 @@ import {
   ADD_PAGE_CHARS,
   CHANGE_ACTUAL_PAGE,
   FILTERANDORDER,
-  orderAndFilterChars,
 } from "./actions";
 
 const initialState = {
@@ -12,6 +11,7 @@ const initialState = {
   orderAndFilterChars: false,
   shownCharacters: [],
   actualPage: false,
+  cantPages: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -35,18 +35,23 @@ const rootReducer = (state = initialState, action) => {
     case ADD_PAGE_CHARS:
       const { offset, limit, filters } = payload;
       let aux = [];
+      let auxCantPages = 0;
       if (state.orderAndFilterChars && filters !== "all") {
         if (state.orderAndFilterChars.length > 12) {
           aux = [...state.orderAndFilterChars].splice(offset, limit);
+          auxCantPages = state.orderAndFilterChars.length / limit - 1;
         } else {
           aux = [...state.orderAndFilterChars];
+          auxCantPages = state.orderAndFilterChars.length / limit - 1;
         }
       } else {
         aux = [...state.allCharacters].splice(offset, limit);
+        auxCantPages = state.allCharacters.length / limit - 1;
       }
       return {
         ...state,
         shownCharacters: aux,
+        cantPages: auxCantPages,
       };
       break;
 
@@ -70,7 +75,7 @@ const rootReducer = (state = initialState, action) => {
       if (BDDChars) {
         momentary = BDDChars;
       } else {
-        momentary = state.allCharacters;
+        momentary = [...state.allCharacters];
       }
       if (type !== "nothing") {
         momentary = momentary.filter((pokemon) => {
@@ -92,11 +97,9 @@ const rootReducer = (state = initialState, action) => {
           if (a[sortBy] < b[sortBy]) {
             return order === "upward" ? -1 : 1;
           }
-          // a must be equal to b
           return 0;
         });
       }
-
       return {
         ...state,
         orderAndFilterChars: momentary,

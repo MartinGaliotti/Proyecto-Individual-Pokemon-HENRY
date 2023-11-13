@@ -38,16 +38,16 @@ const SearchBar = (props) => {
   };
 
   return (
-    <form className={Styles.container} onSubmit={handleSubmit}>
+    <form className={Styles.search} onSubmit={handleSubmit}>
       <input
-        type="text"
         className={Styles.input}
         placeholder="Inserte un nombre... "
+        type="text"
         onChange={handleChange}
         value={name}
       />
-      <button type="submit" className={Styles.button}>
-        B
+      <button className={Styles.button} type="submit">
+        Go
       </button>
     </form>
   );

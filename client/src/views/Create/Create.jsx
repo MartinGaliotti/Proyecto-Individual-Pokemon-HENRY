@@ -5,6 +5,8 @@ import { formState } from "./consts";
 import { useState } from "react";
 import axios from "axios";
 import URL from "../../helpers/URL";
+import BackToLanding from "../../components/BackToLanding/BackToLanding";
+import Styles from "./create.module.css";
 
 let aux = true;
 
@@ -46,7 +48,12 @@ const Create = () => {
     }
   };
 
-  return <>{formRender()}</>;
+  return (
+    <div className={Styles.container}>
+      <BackToLanding />
+      {formRender()}
+    </div>
+  );
 };
 
 export default Create;
