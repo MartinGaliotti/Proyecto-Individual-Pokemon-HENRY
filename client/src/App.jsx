@@ -4,7 +4,17 @@ import Detail from "./views/Detail/Detail.jsx";
 import Create from "./views/Create/Create.jsx";
 import { Routes, Route } from "react-router-dom";
 import pathName from "./helpers/PATHNAME.routes.js";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addAllTypes } from "./redux/actions.js";
+
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(addAllTypes());
+  }, []);
+
   return (
     <>
       <Routes>

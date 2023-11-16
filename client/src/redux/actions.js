@@ -2,6 +2,7 @@ import axios from "axios";
 import URL from "../helpers/URL";
 
 export const ADD_ALL_CHARS = "ADD_ALL_CHARS";
+export const ADD_ALL_TYPES = "ADD_ALL_TYPES";
 export const ADD_NAME_CHARS = "ADD_NAME_CHARS";
 export const ADD_PAGE_CHARS = "ADD_PAGE_CHARS";
 export const FILTERANDORDER = "FILTERANDORDER";
@@ -9,10 +10,10 @@ export const CHANGE_ACTUAL_PAGE = "CHANGE_ACTUAL_PAGE";
 export const CHANGE_CANT_PAGES = "CHANGE_CANT_PAGES";
 
 export const addAllChars = (limit) => {
-  const endpoint = `${URL.BaseUrl}${URL.Pokemons}?limit=${limit}`;
+  const pokemonEndpoint = `${URL.BaseUrl}${URL.Pokemons}?limit=${limit}`;
   return (dispatch) => {
     axios
-      .get(endpoint)
+      .get(pokemonEndpoint)
       .then(({ data }) => {
         return dispatch({
           type: ADD_ALL_CHARS,
@@ -23,6 +24,27 @@ export const addAllChars = (limit) => {
         const { message } = error;
         return dispatch({
           type: ADD_ALL_CHARS,
+          payload: message,
+        });
+      });
+  };
+};
+
+export const addAllTypes = (types) => {
+  const typesEndpoint = `${URL.BaseUrl}${URL.Types}`;
+  return (dispatch) => {
+    axios
+      .get(typesEndpoint)
+      .then(({ data }) => {
+        return dispatch({
+          type: ADD_ALL_TYPES,
+          payload: data,
+        });
+      })
+      .catch((error) => {
+        const { message } = error;
+        return dispatch({
+          type: ADD_ALL_TYPES,
           payload: message,
         });
       });

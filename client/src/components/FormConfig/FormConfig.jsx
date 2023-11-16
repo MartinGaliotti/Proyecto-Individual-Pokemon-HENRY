@@ -1,8 +1,6 @@
 import Styles from "./FormConfig.module.css";
-import axios from "axios";
-import URL from "../../helpers/URL";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { orderAndFilterChars } from "../../redux/actions";
 
 const FormConfig = (props) => {
@@ -10,7 +8,7 @@ const FormConfig = (props) => {
 
   const dispatch = useDispatch();
 
-  const [types, setTypes] = useState([]);
+  const types = useSelector((state) => state.allTypes);
 
   const [options, setOptions] = useState({
     type: "nothing",
@@ -18,17 +16,6 @@ const FormConfig = (props) => {
     sortBy: "default",
     order: "nothing",
   });
-
-  const getTypes = async () => {
-    axios.get(URL.BaseUrl + URL.Types).then((res) => {
-      const { data } = res;
-      setTypes(data);
-    });
-  };
-
-  useEffect(() => {
-    getTypes();
-  }, []);
 
   const optionsTypesRender = () => {
     return types.map((type, key) => {

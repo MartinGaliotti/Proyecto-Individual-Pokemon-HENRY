@@ -1,37 +1,27 @@
 import Styles from "./FormTypes.module.css";
-import axios from "axios";
-import URL from "../../helpers/URL";
 import { formState } from "../../views/Create/consts";
 import actions from "./Consts";
 import Error from "../Error/Error";
 import Loading from "../Loading/Loading";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
-import { useState, useEffect } from "react";
 const FormTypes = (props) => {
-  const [state, setState] = useState(false);
-
-  const [types, setTypes] = useState([]);
+  const types = useSelector((state) => state.allTypes);
 
   const [pokemonTypes, setPokemonTypes] = useState([]);
-
-  const getData = () => {
-    axios
-      .get(URL.BaseUrl + URL.Types) // Pide los tipos de pokemon al back
-      .then((data) => {
-        data = data.data;
-        setState(actions.ok);
-        setTypes(data); // Agrega los tipos al estado local
-      })
-      .catch((error) => {
-        setState(error.message);
-      });
-  };
 
   const handleClick = (event) => {
     const action = event.target.name;
     const value = event.target.value;
     if (action === actions.add) {
-      setPokemonTypes([...pokemonTypes, value]); // Si la accion es agregar, agrega el tipo al pokemon
+      if (value === "unknown" && pokemonTypes.length > 0) {
+        window.alert("No puede agregar unknown si ya agrego algun tipo");
+      } else {
+        !pokemonTypes.includes("unknown")
+          ? setPokemonTypes([...pokemonTypes, value]) // Si la accion es agregar, agrega el tipo al pokemon
+          : window.alert("No puede incluir un tipo si eligió unknown");
+      }
     } else if (action === actions.delete) {
       let aux = pokemonTypes.filter((type) => type !== value); // Si la accion es eliminar, filtra los tipos
       setPokemonTypes(aux); // Y actualiza el estado local
@@ -75,10 +65,6 @@ const FormTypes = (props) => {
     }
   };
 
-  useEffect(() => {
-    getData(); // Cuando se renderiza el componente llama a la funcion getData()
-  }, []);
-
   const typesRender = () => {
     return types.map((type, key) => {
       // Recorre y renderiza los tipos y sus botones
@@ -97,8 +83,8 @@ const FormTypes = (props) => {
   };
 
   const renderComponent = () => {
-    if (state) {
-      if (state === actions.ok) {
+    if (types) {
+      if (typeof types === "object") {
         return (
           <div className={Styles.container}>
             <h2>Elige el/los tipos: </h2>
@@ -116,7 +102,7 @@ const FormTypes = (props) => {
         return (
           <Error
             text={"Los tipos no se pudieron renderizar debido a: "}
-            error={state}
+            error={types}
           />
         );
       }

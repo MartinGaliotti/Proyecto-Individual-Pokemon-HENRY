@@ -1,14 +1,13 @@
 .container {
   background: url(../../assets/fondoInicio.jpg) no-repeat center center;
   background-size: cover;
-  height: 100vh;
+  height: min(640px);
   width: 100vw;
   padding-top: 0.1em;
   padding-bottom: 2em;
 }
 
 .pokemonContainer {
-  max-height: 100vh;
   width: 100vw;
   position: absolute;
   top: 0;
@@ -28,10 +27,14 @@
 .imageContainer {
   margin-top: 2em;
   margin-bottom: 1em;
-  max-height: 40vh;
+  max-height: 250px;
   display: flex;
   align-items: center;
   gap: 5em;
+}
+
+.image {
+  max-width: 250px;
 }
 
 .typeImage {

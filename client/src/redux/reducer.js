@@ -1,5 +1,6 @@
 import {
   ADD_ALL_CHARS,
+  ADD_ALL_TYPES,
   ADD_NAME_CHARS,
   ADD_PAGE_CHARS,
   CHANGE_ACTUAL_PAGE,
@@ -7,6 +8,7 @@ import {
 } from "./actions";
 
 const initialState = {
+  allTypes: [],
   allCharacters: [],
   orderAndFilterChars: false,
   shownCharacters: [],
@@ -28,6 +30,20 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           actualPage: payload,
+        };
+      }
+      break;
+
+    case ADD_ALL_TYPES:
+      if (typeof payload === "object") {
+        return {
+          ...state,
+          allTypes: payload,
+        };
+      } else {
+        return {
+          ...state,
+          allTypes: payload,
         };
       }
       break;
