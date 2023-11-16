@@ -1,7 +1,7 @@
 .button {
-  position: relative;
   width: 150px;
   height: 40px;
+  margin: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;

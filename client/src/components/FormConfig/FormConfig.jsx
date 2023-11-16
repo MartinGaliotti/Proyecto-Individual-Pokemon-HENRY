@@ -47,67 +47,81 @@ const FormConfig = (props) => {
     setOptions({ ...options, [property]: value });
   };
 
+  const hideConfig = () => {
+    setConfig(false);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(orderAndFilterChars(options)).then(() => {
       setReload(Math.random());
     });
-  };
-
-  const hideConfig = () => {
-    setConfig(false);
+    hideConfig();
   };
 
   return (
     <form onSubmit={handleSubmit} className={Styles.container}>
-      <button onClick={hideConfig}>X</button>
-      <label htmlFor="type">Filtrar por tipo: </label>
-      <select
-        onChange={handleChange}
-        value={options.type}
-        className={Styles.select}
-        name="type"
-      >
-        <option value="nothing">------</option>
-        {optionsTypesRender()}
-      </select>
+      <button className={Styles.buttonClose} onClick={hideConfig}>
+        <span className={Styles.X}>X</span>
+      </button>
       {/*  */}
-      <label htmlFor="origin">Filtrar por origen: </label>
-      <select
-        onChange={handleChange}
-        value={options.origin}
-        className={Styles.select}
-        name="origin"
-      >
-        <option value="API">API</option>
-        <option value="BDD">Mis pokemons</option>
-      </select>
+      <div className={Styles.optionContainer}>
+        <label htmlFor="type">Filtrar por tipo: </label>
+        <select
+          onChange={handleChange}
+          value={options.type}
+          className={Styles.select}
+          name="type"
+        >
+          <option value="nothing">------</option>
+          {optionsTypesRender()}
+        </select>
+      </div>
       {/*  */}
-      <label htmlFor="sortBy">Ordenar por: </label>
-      <select
-        onChange={handleChange}
-        value={options.sortBy}
-        className={Styles.select}
-        name="sortBy"
-      >
-        <option value="default">Defecto</option>
-        <option value="name">Nombre</option>
-        <option value="attack">Ataque</option>
-      </select>
+      <div className={Styles.optionContainer}>
+        <label htmlFor="origin">Filtrar por origen: </label>
+        <select
+          onChange={handleChange}
+          value={options.origin}
+          className={Styles.select}
+          name="origin"
+        >
+          <option value="API">API</option>
+          <option value="BDD">Mis pokemons</option>
+        </select>
+      </div>
       {/*  */}
-      <label htmlFor="order">En orden: </label>
-      <select
-        onChange={handleChange}
-        value={options.order}
-        className={Styles.select}
-        name="order"
-      >
-        <option value="nothing">------</option>
-        <option value="upward">Ascendente</option>
-        <option value="falling">Descendente</option>
-      </select>
+      <div className={Styles.optionContainer}>
+        <label htmlFor="sortBy">Ordenar por: </label>
+        <select
+          onChange={handleChange}
+          value={options.sortBy}
+          className={Styles.select}
+          name="sortBy"
+        >
+          <option value="default">Defecto</option>
+          <option value="name">Nombre</option>
+          <option value="attack">Ataque</option>
+        </select>
+      </div>
       {/*  */}
-      <button type="submit">Aplicar</button>
+      <div className={Styles.optionContainer}>
+        <label htmlFor="order">En orden: </label>
+        <select
+          onChange={handleChange}
+          value={options.order}
+          className={Styles.select}
+          name="order"
+        >
+          <option value="nothing">------</option>
+          <option value="upward">Ascendente</option>
+          <option value="falling">Descendente</option>
+        </select>
+      </div>
+      {/*  */}
+      <button type="submit" className={Styles.submit}>
+        Aplicar
+      </button>
     </form>
   );
 };

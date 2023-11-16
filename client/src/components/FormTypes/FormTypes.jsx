@@ -51,14 +51,24 @@ const FormTypes = (props) => {
     // Si el tipo se encuentra agregado, renderiza el boton eliminar
     if (pokemonTypes.includes(type)) {
       return (
-        <button name={actions.delete} onClick={handleClick} value={type}>
+        <button
+          className={Styles.typeButtonDelete}
+          name={actions.delete}
+          onClick={handleClick}
+          value={type}
+        >
           Eliminar
         </button>
       );
     } else {
       // Sino el boton agregar
       return (
-        <button name={actions.add} onClick={handleClick} value={type}>
+        <button
+          name={actions.add}
+          onClick={handleClick}
+          value={type}
+          className={Styles.typeButtonAdd}
+        >
           Agregar
         </button>
       );
@@ -73,8 +83,13 @@ const FormTypes = (props) => {
     return types.map((type, key) => {
       // Recorre y renderiza los tipos y sus botones
       return (
-        <div key={key}>
-          <div>{type}</div>
+        <div className={Styles.typeContainer} key={key}>
+          <img
+            className={Styles.typeImage}
+            src={`./src/assets/pokemonTypesImage/${type}.png`}
+            alt={type}
+          />
+          <div className={Styles.type}>{type}</div>
           {buttonRender(type)}
         </div>
       );
@@ -85,7 +100,7 @@ const FormTypes = (props) => {
     if (state) {
       if (state === actions.ok) {
         return (
-          <>
+          <div className={Styles.container}>
             <h2>Elige el/los tipos: </h2>
             <div className={Styles.typesContainer}>{typesRender()}</div>
 
@@ -95,7 +110,7 @@ const FormTypes = (props) => {
               </span>
               <span className={Styles.buttonText}>Crear</span>
             </button>
-          </>
+          </div>
         );
       } else {
         return (
@@ -110,7 +125,7 @@ const FormTypes = (props) => {
     }
   };
 
-  return <>{renderComponent()}</>;
+  return renderComponent();
 };
 
 export default FormTypes;

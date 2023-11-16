@@ -3,6 +3,7 @@ import pathName from "../../helpers/PATHNAME.routes";
 import { formState } from "../../views/Create/consts";
 import Loading from "../Loading/Loading";
 import Error from "../Error/Error";
+import Styles from "./FormComplete.module.css";
 
 const FormComplete = (props) => {
   const navigate = useNavigate();
@@ -15,9 +16,12 @@ const FormComplete = (props) => {
     if (result === formState.created) {
       // Si el pokemon se creo bien renderiza esto
       return (
-        <div>
-          <h1>¡Pokemon creado exitosamente!</h1>
-          <button onClick={handleClick}>Vover a la pagina principal</button>
+        <div className={Styles.container}>
+          <h1 className={Styles.title}>¡Pokemon creado exitosamente!</h1>
+          <button className={Styles.back} onClick={handleClick}>
+            <i className={Styles.animation}></i>Vover a la pagina principal
+            <i className={Styles.animation}></i>
+          </button>
         </div>
       );
     } else if (result === formState.complete) {
@@ -30,6 +34,6 @@ const FormComplete = (props) => {
     }
   };
 
-  return <>{resultRender(props.result)}</>;
+  return resultRender(props.result);
 };
 export default FormComplete;

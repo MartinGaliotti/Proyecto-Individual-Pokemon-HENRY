@@ -1,7 +1,6 @@
 import Styles from "./Card.module.css";
 import { useNavigate } from "react-router-dom";
 import pathName from "../../helpers/PATHNAME.routes";
-
 const Card = (props) => {
   const { name, image, types, id } = props; // Recibe los datos por props
   const navigate = useNavigate();
@@ -12,9 +11,12 @@ const Card = (props) => {
       <div className={Styles.typesContainer}>
         {types.map((type, key) => {
           return (
-            <div className={Styles.types} key={key}>
-              {type}
-            </div>
+            <img
+              className={Styles.imgType}
+              key={key}
+              src={`./src/assets/pokemonTypesImage/${type}.png`}
+              alt={`${type}`}
+            />
           );
         })}
       </div>
@@ -28,9 +30,13 @@ const Card = (props) => {
   const cardRender = () => {
     if (name && image && types) {
       return (
-        <div onClick={handleClick} className={Styles.container}>
+        <div onClick={handleClick} className={Styles.container} key={id}>
           <h1 className={Styles.name}>{name}</h1>
-          <img src={image} alt="Imagen pokemon" className={Styles.image} />
+          <img
+            src={image}
+            alt="Imagen pokemon"
+            className={Styles.pokemonImage}
+          />
           {typesRender()}
         </div>
       );

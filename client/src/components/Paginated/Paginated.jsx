@@ -11,9 +11,8 @@ const Paginated = () => {
   const cantPages = useSelector((state) => state.cantPages);
   const actualPage = useSelector((state) => state.actualPage);
 
-  const changePage = (event) => {
+  const changePage = (action) => {
     // Función para cambiar la pagina
-    const action = event.target.name;
     let aux = 0;
     switch (action) {
       case next:
@@ -43,11 +42,15 @@ const Paginated = () => {
 
   const renderPages = () => {
     let buttons = [];
-    for (let i = 0; i <= cantPages; i++) {
+    let i = 0;
+    let max = actualPage + 2;
+    actualPage > 2 ? (i = actualPage - 2) : i;
+
+    for (i; i <= cantPages && i <= max; i++) {
       if (i === actualPage) {
         buttons.push(
           <button
-            className={Styles.numberButton}
+            className={Styles.numberActualButton}
             key={i}
             name={number}
             value={i}
@@ -59,7 +62,7 @@ const Paginated = () => {
       } else {
         buttons.push(
           <button
-            className={Styles.numberActualButton}
+            className={Styles.numberButton}
             key={i}
             name={number}
             value={i}
@@ -77,12 +80,29 @@ const Paginated = () => {
     if (cantPages > 1) {
       return (
         <div className={Styles.container}>
-          <button name={prev} onClick={changePage}>
-            prev
+          <button
+            className={Styles.buttonText}
+            onClick={() => changePage(prev)}
+          >
+            <span onClick={() => changePage(prev)} className={Styles.icon}>
+              {"<<"}
+            </span>
+            <span onClick={() => changePage(prev)} className={Styles.text}>
+              Anterior
+            </span>
           </button>
-          {renderPages()}
-          <button name={next} onClick={changePage}>
-            next
+          <div className={Styles.numberContainer}>{renderPages()}</div>
+          <button
+            className={Styles.buttonText}
+            onClick={() => changePage(next)}
+          >
+            <span onClick={() => changePage(next)} className={Styles.text}>
+              {" "}
+              Siguiente
+            </span>
+            <span onClick={() => changePage(next)} className={Styles.icon}>
+              {">>"}
+            </span>
           </button>
         </div>
       );

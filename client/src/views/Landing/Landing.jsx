@@ -12,7 +12,7 @@ const Landing = () => {
   return (
     <div className={Styles.container}>
       <button className={Styles.button} onClick={redirectHome}>
-        HOME
+        INICIO
       </button>
     </div>
   );

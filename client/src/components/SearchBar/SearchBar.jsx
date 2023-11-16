@@ -46,9 +46,7 @@ const SearchBar = (props) => {
         onChange={handleChange}
         value={name}
       />
-      <button className={Styles.button} type="submit">
-        Go
-      </button>
+      <button className={Styles.button} type="submit"></button>
     </form>
   );
 };

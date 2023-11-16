@@ -11,9 +11,7 @@ const ToCreate = () => {
 
   return (
     <div className={Styles.container}>
-      <button className={Styles.button} onClick={handleClick}>
-        +
-      </button>
+      <button className={Styles.button} onClick={handleClick}></button>
     </div>
   );
 };

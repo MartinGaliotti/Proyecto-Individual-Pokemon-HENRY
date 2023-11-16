@@ -31,17 +31,107 @@ const Detail = (props) => {
     // Renderiza las estadisticas que disponga el pokemon
     return (
       <ul className={Styles.statsList}>
-        <li className={Styles.hp}>{pokemon.hp}</li>
-        <li className={Styles.attack}>{pokemon.attack}</li>
-        <li className={Styles.defense}>{pokemon.defense}</li>
+        {/*  */}
+        <li className={Styles.stat}>
+          <label htmlFor="hp" className={Styles.textStat}>
+            Vida: {pokemon.hp}
+          </label>
+          <input
+            readOnly
+            value={pokemon.hp}
+            max="255"
+            min="1"
+            step="1"
+            type="range"
+            name="hp"
+            className={Styles.input}
+          />
+        </li>
+        {/*  */}
+        <li className={Styles.stat}>
+          <label htmlFor="attack" className={Styles.textStat}>
+            Ataque:{pokemon.attack}
+          </label>
+          <input
+            value={pokemon.attack}
+            readOnly
+            max="255"
+            min="1"
+            type="range"
+            name="attack"
+            className={Styles.input}
+          />
+        </li>
+        {/*  */}
+        <li className={Styles.stat}>
+          <label htmlFor="defense" className={Styles.textStat}>
+            Defensa:{pokemon.defense}
+          </label>
+          <input
+            value={pokemon.defense}
+            readOnly
+            max="255"
+            min="1"
+            step="1"
+            type="range"
+            name="defense"
+            className={Styles.input}
+          />
+        </li>
+        {/*  */}
         {pokemon.speed !== 0 && (
-          <li className={Styles.speed}>{pokemon.speed}</li>
+          <li className={Styles.stat}>
+            <label htmlFor="speed" className={Styles.textStat}>
+              Velocidad:{pokemon.speed}
+            </label>
+            <input
+              value={pokemon.speed}
+              readOnly
+              max="150"
+              min="0"
+              step="1"
+              type="range"
+              name="speed"
+              className={Styles.input}
+            />
+          </li>
         )}
+        {/*  */}
         {pokemon.height !== 0 && (
-          <li className={Styles.height}>{pokemon.height}</li>
+          <li className={Styles.stat}>
+            <label htmlFor="height" className={Styles.textStat}>
+              Altura:{pokemon.height}
+            </label>
+            <input
+              value={pokemon.height}
+              readOnly
+              max="50"
+              min="0"
+              step="0.1"
+              type="range"
+              name="height"
+              className={Styles.input}
+            />
+          </li>
         )}
+        {/*  */}
         {pokemon.weight !== 0 && (
-          <li className={Styles.weight}>{pokemon.weight}</li>
+          <li className={Styles.stat}>
+            <label htmlFor="weight" className={Styles.textStat}>
+              Peso:{pokemon.weight}
+            </label>
+            <input
+              value={pokemon.weight}
+              readOnly
+              max="1000"
+              min="0"
+              step="1"
+              type="range"
+              name="weight"
+              className={Styles.input}
+            />
+            {/*  */}
+          </li>
         )}
       </ul>
     );
@@ -51,24 +141,29 @@ const Detail = (props) => {
     // Renderiza los datos del pokemon
     if (pokemon.image) {
       return (
-        <>
-          <h1 className={Styles.name}>{pokemon.name.toUpperCase()}</h1>
+        <div className={Styles.pokemonContainer}>
           <h2 className={Styles.id}>{pokemon.id}</h2>
-          <div className={Styles.imgageContainer}>
+          <h1 className={Styles.name}>{pokemon.name.toUpperCase()}</h1>
+          <div className={Styles.imageContainer}>
             <img src={pokemon.image} alt="POKEMON" className={Styles.image} />
             {statsRender()}
           </div>
-          <ul>
-            <h4 className={Styles.typesTitule}>TIPOS</h4>
+          <h4 className={Styles.typesTitle}>TIPOS</h4>
+          <ul className={Styles.types}>
             {pokemon.types.map((type, id) => {
               return (
                 <li key={id} className={Styles.type}>
-                  {type}
+                  <label>{type}</label>
+                  <img
+                    className={Styles.typeImage}
+                    src={`../src/assets/pokemonTypesImage/${type}.png`}
+                    alt={type}
+                  />
                 </li>
               );
             })}
           </ul>
-        </>
+        </div>
       );
     } else if (error) {
       return (
@@ -84,7 +179,7 @@ const Detail = (props) => {
 
   return (
     <div className={Styles.container}>
-      <BackToLanding />
+      <BackToLanding className={Styles.back} />
       {pokemonRender()}
     </div>
   );
