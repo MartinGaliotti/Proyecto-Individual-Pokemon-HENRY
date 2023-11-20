@@ -18,30 +18,55 @@ module.exports = (sequelize) => {
       image: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          isUrl: true,
+        },
       },
       hp: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          min: 1,
+          max: 255,
+        },
       },
       attack: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          min: 1,
+          max: 255,
+        },
       },
       defense: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          min: 1,
+          max: 255,
+        },
       },
       speed: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
+        validate: {
+          max: 150,
+        },
       },
       height: {
         type: DataTypes.FLOAT,
         defaultValue: 0,
+        validate: {
+          isFloat: true,
+          max: 50,
+        },
       },
       weight: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
+        validate: {
+          max: 1000,
+        },
       },
     },
     {
